@@ -1,12 +1,26 @@
 <?php
 
-namespace App\Safe;
+namespace App;
 
-function json_decode($json, $assoc = false)
+class Time
 {
-    $result = \json_decode($json, $assoc);
-    if (json_last_error() != JSON_ERROR_NONE) {
-        throw new \Exception("'{$json}' невозможно прочитать");
+    private $h;
+    private $m;
+
+    public function __construct($h, $m)
+    {
+        $this->h = $h;
+        $this->m = $m;
     }
-    return $result;
+
+    public static function fromString(string $timeString): Time
+    {
+        $timeArray = explode(":", $timeString);
+        return new Time($timeArray[0], $timeArray[1]);
+    }
+
+    public function __toString(): string
+    {
+        return "{$this->h}:{$this->m}";
+    }
 }
