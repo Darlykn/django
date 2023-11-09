@@ -1,23 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Safe;
 
-interface ComparableInterface
+function json_decode($json, $assoc = false)
 {
-    public function compareTo($user): bool;
-}
-
-class User implements ComparableInterface
-{
-    private $id;
-    private $name;
-    public function __construct(int $id, string $name)
-    {
-        $this->id = $id;
-        $this->name = $name;        
+    $result = \json_decode($json, $assoc);
+    if (json_last_error() != JSON_ERROR_NONE) {
+        throw new \Exception("'{$json}' невозможно прочитать");
     }
-    public function compareTo($user): bool
-    {
-        return $this->id === $user->id;
-    }
+    return $result;
 }
